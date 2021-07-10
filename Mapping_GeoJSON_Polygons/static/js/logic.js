@@ -63,24 +63,26 @@ let baseMaps = {
 let map = L.map('mapid', {
   center: [43.7, -79.3],
   zoom: 11,
-  layers: [satelliteStreets]
+  layers: [streets]
 })
 
 // Pass our map layers into our layers control and add the layers control to the map.
 L.control.layers(baseMaps).addTo(map);
 
 // Accessing the Toronto direct routes GeoJSON URL.. after the tile layer to ensure map loads first
-let torontoData = "https://raw.githubusercontent.com/Christopheremorgan/Mapping_Earthquakes/Mapping_GeoJSON_Linestrings/torontoRoutes.json";
+let torontoHoods = "https://raw.githubusercontent.com/Christopheremorgan/Mapping_Earthquakes/Mapping_GeoJSON_Polygons/torontoNeighborhoods.json";
 
 // Grabbing our GeoJSON data.
-d3.json(torontoData).then(function(data) {
+d3.json(torontoHoods).then(function(data) {
   console.log(data);
 // Creating a GeoJSON layer with the retrieved data.
 L.geoJson(data, {
-  color: "#ffffa1",
-  weight: 2,
+  color: "blue",
+  weight: 1,
+  fillColor: "yellow",
+  fillOpacity: 0.2,
   onEachFeature: function(feature, layer) {
-      layer.bindPopup("<h3> Airline: " + feature.properties.airline + "</h3> <hr> <h3> Destination: " + feature.properties.dst + "</h3>");
+      layer.bindPopup("<h3> Neighborhood: " + feature.properties.AREA_NAME + "</h3>");
   }
 })
 .addTo(map);
